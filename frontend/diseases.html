@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="রোগব্যাধি তথ্য কেন্দ্র — ডেঙ্গু, ডায়াবেটিস, হাইপারটেনশন সহ বিভিন্ন রোগের তথ্য। HealthCare Plus।">
+    <title>রোগব্যাধি তথ্য - HealthCare Plus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css?v=3">
+    <link rel="stylesheet" href="assets/css/animations.css">
+    <script src="assets/js/auth.js"></script>
+
+<style>
+    @media (min-width: 1200px) {
+        .navbar-nav .nav-link {
+            font-size: 0.95rem !important;
+            padding-left: 0.6rem !important;
+            padding-right: 0.6rem !important;
+            white-space: nowrap;
+        }
+        .navbar-brand {
+            font-size: 1.2rem !important;
+        }
+    }
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-xl navbar-light fixed-top glass-nav">
+    <div class="container-fluid px-xl-5">
+        <a class="navbar-brand fw-bold" href="home.html">
+            <i class="fa-solid fa-notes-medical"></i> HealthCare Plus
+        </a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="home.html">হোম</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active-menu" href="diseases.html">রোগব্যাধি</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="home_care.html">ঘরোয়া যত্ন</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="nutrition.html">পুষ্টি ও স্বাস্থ্য</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="calculators.html">ক্যালকুলেটর</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">ডিরেক্টরি</a>
+                    <ul class="dropdown-menu glass-dropdown">
+                        <li><a class="dropdown-item fw-bold text-primary" href="nearby.html"><i class="fa-solid fa-location-dot me-2"></i>লাইভ ম্যাপ (Nearby)</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item fw-bold" href="district_info.html"><i class="fa-solid fa-map-location-dot me-2"></i>জেলা ভিত্তিক তথ্য</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="doctors.html"><i class="fa-solid fa-user-doctor me-2"></i>ডাক্তার</a></li>
+                        <li><a class="dropdown-item" href="hospitals.html"><i class="fa-solid fa-hospital me-2"></i>হাসপাতাল</a></li>
+                        <li><a class="dropdown-item" href="pharmacies.html"><i class="fa-solid fa-pills me-2"></i>ফার্মেসি</a></li>
+                        <li><a class="dropdown-item" href="blood_banks.html"><i class="fa-solid fa-droplet me-2"></i>ব্লাড ব্যাংক</a></li>
+                        <li><a class="dropdown-item" href="ambulances.html"><i class="fa-solid fa-truck-medical me-2"></i>অ্যাম্বুলেন্স</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-bold text-info" href="chatbot.html"><i class="fa-solid fa-robot me-1"></i> AI চ্যাটবট</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-bold text-success" href="scanner.html"><i class="fa-solid fa-expand me-1"></i> AI Meal স্ক্যানার</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-bold text-danger" href="documents.html"><i class="fa-solid fa-folder-open me-1"></i>ডকুমেন্ট ফোল্ডার</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-bold text-primary" href="dashboard.html"><i class="fa-solid fa-chart-pie me-1"></i>ড্যাশবোর্ড</a>
+                </li>
+                <li class="nav-item ms-lg-2">
+                    <a class="nav-link btn btn-outline-danger text-danger rounded-pill px-4 fw-bold hover-white" href="#" onclick="event.preventDefault(); window.unsubscribeUser();">
+                        <i class="fa-solid fa-sign-out-alt me-1"></i> আনসাবস্ক্রাইব
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Page Header -->
+<div class="page-header text-center">
+    <div class="container position-relative" style="z-index:2;">
+        <h2 class="fw-bold display-6"><i class="fa-solid fa-viruses me-2"></i> রোগব্যাধি তথ্য কেন্দ্র</h2>
+        <p class="mb-0">বিভিন্ন রোগের প্রাথমিক ধারণা, লক্ষণ এবং প্রতিরোধ সম্পর্কে জানুন</p>
+    </div>
+</div>
+
+<div class="main-content-wrapper container pt-0 pb-5 mt-3">
+    <!-- Disclaimer -->
+    <div class="alert alert-warning shadow-sm glass-disclaimer mb-4" role="alert">
+        <div class="d-flex align-items-center">
+            <div class="flex-shrink-0"><i class="fa-solid fa-triangle-exclamation fa-2x text-warning"></i></div>
+            <div class="flex-grow-1 ms-3">
+                <h6 class="alert-heading fw-bold mb-1">গুরুত্বপূর্ণ সতর্কতা (Disclaimer)</h6>
+                <p class="mb-0 small">এই প্ল্যাটফর্মে প্রদত্ত সকল তথ্য শুধুমাত্র সাধারণ স্বাস্থ্য সচেতনতা এবং শিক্ষার উদ্দেশ্যে দেওয়া হয়েছে। এটি কোনোভাবেই বিশেষজ্ঞ ডাক্তারের পরামর্শের বিকল্প নয়।</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-8 col-lg-6 mx-auto">
+            <div class="search-box-glass">
+                <input type="text" id="diseaseSearch" class="form-control" placeholder="রোগের নাম দিয়ে খুঁজুন...">
+                <button class="btn btn-primary"><i class="fa-solid fa-search me-1"></i> খুঁজুন</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4" id="diseaseList">
+        <!-- JS will populate this from app_data.js -->
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer text-white pt-5 pb-3 mt-auto">
+    <div class="container text-center">
+        <p style="color: rgba(255,255,255,0.4); font-size:0.85rem;">&copy; <span id="year"></span> HealthCare Plus. সর্বস্বত্ব সংরক্ষিত।</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="assets/js/app_data.js"></script>
+<script>
+    AOS.init({duration: 800, once: true});
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Search functionality
+    document.getElementById('diseaseSearch').addEventListener('keyup', function() {
+        if(window.renderDiseases) {
+            window.currentDiseaseFilter = this.value.toLowerCase();
+            window.currentDiseaseLimit = 6; // Reset limit on search
+            window.renderDiseases();
+        }
+    });
+</script>
+
+<!-- Universal Footer Card -->
+<style>
+    @media (max-width: 767px) { body { padding-bottom: 60px !important; } }
+    .universal-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-top: 3px solid #0072ff !important;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
+        z-index: 1050;
+        padding: 12px 20px;
+        text-align: center;
+        color: #1e293b;
+        font-size: 0.9rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+    }
+</style>
+<div class="universal-footer d-md-none">
+    <i class="fa-solid fa-heart-pulse text-danger"></i> 
+    <span>&copy; ২০২৬ HealthCare Plus. সর্বস্বত্ব সংরক্ষিত।</span>
+</div>
+
+</body>
+</html>

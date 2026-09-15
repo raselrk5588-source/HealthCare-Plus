@@ -1,0 +1,320 @@
+﻿<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আমার স্মার্ট ড্যাশবোর্ড - HealthCare Plus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css?v=3">
+    <link rel="stylesheet" href="assets/css/animations.css">
+    <script src="assets/js/auth.js"></script>
+
+<style>
+    @media (min-width: 1200px) {
+        .navbar-nav .nav-link {
+            font-size: 0.95rem !important;
+            padding-left: 0.6rem !important;
+            padding-right: 0.6rem !important;
+            white-space: nowrap;
+        }
+        .navbar-brand {
+            font-size: 1.2rem !important;
+        }
+    }
+</style>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-xl navbar-light fixed-top glass-nav">
+    <div class="container-fluid px-xl-5">
+        <a class="navbar-brand fw-bold" href="home.html">
+            <i class="fa-solid fa-notes-medical"></i> HealthCare Plus
+        </a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="home.html">হোম</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="diseases.html">রোগব্যাধি</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="home_care.html">ঘরোয়া যত্ন</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="nutrition.html">পুষ্টি ও স্বাস্থ্য</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="calculators.html">ক্যালকুলেটর</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">ডিরেক্টরি</a>
+                    <ul class="dropdown-menu glass-dropdown">
+                        <li><a class="dropdown-item fw-bold text-primary" href="nearby.html"><i class="fa-solid fa-location-dot me-2"></i>লাইভ ম্যাপ (Nearby)</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item fw-bold" href="district_info.html"><i class="fa-solid fa-map-location-dot me-2"></i>জেলা ভিত্তিক তথ্য</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="doctors.html"><i class="fa-solid fa-user-doctor me-2"></i>ডাক্তার</a></li>
+                        <li><a class="dropdown-item" href="hospitals.html"><i class="fa-solid fa-hospital me-2"></i>হাসপাতাল</a></li>
+                        <li><a class="dropdown-item" href="pharmacies.html"><i class="fa-solid fa-pills me-2"></i>ফার্মেসি</a></li>
+                        <li><a class="dropdown-item" href="blood_banks.html"><i class="fa-solid fa-droplet me-2"></i>ব্লাড ব্যাংক</a></li>
+                        <li><a class="dropdown-item" href="ambulances.html"><i class="fa-solid fa-truck-medical me-2"></i>অ্যাম্বুলেন্স</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-bold text-info" href="chatbot.html"><i class="fa-solid fa-robot me-1"></i> AI চ্যাটবট</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-bold text-success" href="scanner.html"><i class="fa-solid fa-expand me-1"></i> AI Meal স্ক্যানার</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-bold text-danger" href="documents.html"><i class="fa-solid fa-folder-open me-1"></i>ডকুমেন্ট ফোল্ডার</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-bold text-primary active-menu" href="dashboard.html"><i class="fa-solid fa-chart-pie me-1"></i>ড্যাশবোর্ড</a>
+                </li>
+                <li class="nav-item ms-lg-2">
+                    <a class="nav-link btn btn-outline-danger text-danger rounded-pill px-4 fw-bold hover-white" href="#" onclick="event.preventDefault(); window.unsubscribeUser();">
+                        <i class="fa-solid fa-sign-out-alt me-1"></i> আনসাবস্ক্রাইব
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container pt-3 mt-5">
+    <!-- Content Sections (Hidden by default, shown if data exists) -->
+    <div id="dashboardContent">
+
+        <!-- User Profile Section -->
+        <div class="card glass-card border-0 shadow-sm p-4 mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold m-0"><i class="fa-solid fa-user-circle text-primary me-2"></i> আমার প্রোফাইল</h5>
+                <button onclick="clearData()" class="btn btn-sm btn-outline-danger rounded-pill px-3"><i class="fa-solid fa-trash me-1"></i> সব ডেটা মুছুন</button>
+            </div>
+            <div class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label class="form-label small text-muted fw-bold">ইউজার আইডি (মোবাইল নম্বর)</label>
+                    <input type="text" class="form-control bg-light text-muted" id="userPhoneDisplay" readonly>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label small text-muted fw-bold">আপনার নাম</label>
+                    <input type="text" class="form-control" id="userNameInput" placeholder="নাম লিখুন" readonly>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small text-muted fw-bold">বয়স</label>
+                    <input type="number" class="form-control" id="userAgeInput" placeholder="যেমন: 25" readonly>
+                </div>
+                <div class="col-md-2 d-flex flex-column justify-content-end">
+                    <button id="editProfileBtn" onclick="toggleEditProfile()" class="btn btn-outline-primary w-100 rounded-3"><i class="fa-solid fa-pen"></i> এডিট</button>
+                    <button id="saveProfileBtn" onclick="saveUserProfile()" class="btn btn-primary w-100 rounded-3 d-none"><i class="fa-solid fa-save"></i> সেভ</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Medicine Schedule -->
+            <div class="col-lg-6">
+                <div class="card glass-card border-0 shadow-sm p-4 h-100">
+                    <h5 class="fw-bold mb-3 pb-2" style="border-bottom: 3px solid; border-image: linear-gradient(90deg, var(--primary), var(--info)) 1;">
+                        <i class="fa-solid fa-pills text-primary me-2"></i> ঔষধের রুটিন
+                    </h5>
+                    
+                    <form id="addMedForm" class="mb-4">
+                        <div class="row g-2">
+                            <div class="col-12 col-md-5">
+                                <input type="text" class="form-control form-control-sm" id="medName" placeholder="ওষুধের নাম (যেমন: Napa)" required>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <select class="form-select form-select-sm" id="medDose" required>
+                                    <option value="" disabled selected>খাওয়ার নিয়ম</option>
+                                    <option value="সকালে ও রাতে">সকালে ও রাতে</option>
+                                    <option value="তিন বেলা">তিন বেলা</option>
+                                    <option value="শুধু সকালে">শুধু সকালে</option>
+                                    <option value="শুধু দুপুরে">শুধু দুপুরে</option>
+                                    <option value="শুধু রাতে">শুধু রাতে</option>
+                                    <option value="প্রয়োজন অনুযায়ী">প্রয়োজন অনুযায়ী</option>
+                                </select>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <select class="form-select form-select-sm" id="medTiming" required>
+                                    <option value="" disabled selected>খাওয়ার সময়</option>
+                                    <option value="খাবারের আগে">খাবারের আগে</option>
+                                    <option value="খাবারের পরে">খাবারের পরে</option>
+                                    <option value="খাবারের সাথে">খাবারের সাথে</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-md-1">
+                                <button type="submit" class="btn btn-primary btn-sm w-100"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                    
+                    <div id="medsContainer"></div>
+                </div>
+            </div>
+
+            <!-- Food Analytics -->
+            <div class="col-lg-6">
+                <div class="card glass-card border-0 shadow-sm p-4 h-100">
+                    <h5 class="fw-bold mb-3 pb-2" style="border-bottom: 3px solid; border-image: linear-gradient(90deg, var(--warning), #ffc107) 1;">
+                        <i class="fa-solid fa-bowl-food text-warning me-2"></i> ডায়েট ও পুষ্টি (Food Scans)
+                    </h5>
+                    <div id="foodContainer"></div>
+                </div>
+            </div>
+            
+
+        </div>
+
+    </div> <!-- End of dashboardContent -->
+
+    <!-- Health Tracking Charts (Always Visible) -->
+    <div id="healthTrackingSection">
+        <h5 class="fw-bold mt-5 mb-3 pb-2" style="border-bottom: 3px solid; border-image: linear-gradient(90deg, var(--info), #00b4d8) 1;">
+            <i class="fa-solid fa-chart-pie text-info me-2"></i> পার্সোনাল হেলথ ট্র্যাকিং
+        </h5>
+        
+        <div class="row g-4 mb-5">
+            <div class="col-lg-4">
+                <div class="card glass-card border-0 shadow-sm p-4 h-100">
+                    <h6 class="fw-bold mb-3"><i class="fa-solid fa-plus-circle text-primary me-2"></i> নতুন ডেটা যুক্ত করুন</h6>
+                    <form id="healthDataForm">
+                        <div class="mb-3">
+                            <label class="form-label small text-muted">তারিখ</label>
+                            <input type="date" class="form-control" id="trackDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small text-muted">ব্লাড প্রেসার (Sys/Dia)</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="bpSys" placeholder="120" required>
+                                <span class="input-group-text">/</span>
+                                <input type="number" class="form-control" id="bpDia" placeholder="80" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small text-muted">ব্লাড সুগার (mmol/L)</label>
+                            <input type="number" step="0.1" class="form-control" id="bloodSugar" placeholder="5.5" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small text-muted">হার্ট রেট (bpm)</label>
+                            <input type="number" class="form-control" id="heartRate" placeholder="72" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small text-muted">ক্রিয়েটিনিন (mg/dL)</label>
+                            <input type="number" step="0.1" class="form-control" id="creatinine" placeholder="1.0" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small text-muted">উচ্চতা (cm)</label>
+                            <input type="number" step="0.1" class="form-control" id="height" placeholder="170" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small text-muted">ওজন (kg)</label>
+                            <input type="number" step="0.1" class="form-control" id="weight" placeholder="65" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 rounded-pill mt-2">সেভ করুন</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="card glass-card border-0 shadow-sm p-4 h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="fw-bold"><i class="fa-solid fa-chart-line text-success me-2"></i> হেলথ হিস্ট্রি চার্ট</h6>
+                        <select class="form-select form-select-sm w-auto" id="chartTypeSelector">
+                            <option value="bp">ব্লাড প্রেসার</option>
+                            <option value="sugar">ব্লাড সুগার</option>
+                            <option value="hr">হার্ট রেট</option>
+                            <option value="creatinine">কিডনি ক্রিয়েটিনিন</option>
+                            <option value="height">উচ্চতা (Height)</option>
+                            <option value="weight">ওজন (Weight)</option>
+                        </select>
+                    </div>
+                    <div style="height: 300px; width: 100%;">
+                        <div id="healthChart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row g-4 mb-5">
+            <div class="col-12">
+                <div class="card glass-card border-0 shadow-sm p-4">
+                    <h6 class="fw-bold mb-3"><i class="fa-solid fa-list text-primary me-2"></i> পূর্বের রেকর্ডসমূহ (History)</h6>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead>
+                                <tr>
+                                    <th>তারিখ</th>
+                                    <th>প্রেসার</th>
+                                    <th>সুগার</th>
+                                    <th>হার্ট রেট</th>
+                                    <th>ক্রিয়েটিনিন</th>
+                                    <th>উচ্চতা/ওজন</th>
+                                    <th class="text-end">অ্যাকশন</th>
+                                </tr>
+                            </thead>
+                            <tbody id="healthHistoryTableBody">
+                                <!-- Data injected by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer text-white pt-5 pb-3">
+    <div class="container text-center">
+        <p style="color: rgba(255,255,255,0.4); font-size:0.85rem;">&copy; 2026 HealthCare Plus.</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+<!-- Universal Footer Card -->
+<style>
+    @media (max-width: 767px) { body { padding-bottom: 60px !important; } }
+    .universal-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: #003399;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-top: 3px solid #0072ff !important;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        box-shadow: 0 -5px 20px rgba(0, 51, 153, 0.3);
+        z-index: 1050;
+        padding: 12px 20px;
+        text-align: center;
+        color: #ffffff;
+        font-size: 0.9rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+    }
+</style>
+<div class="universal-footer d-md-none">
+    <i class="fa-solid fa-heart-pulse text-white"></i> 
+    <span>&copy; ২০২৬ HealthCare Plus. সর্বস্বত্ব সংরক্ষিত।</span>
+</div>
+
+    <script src="assets/js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,528 @@
+﻿<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthCare Plus - Premium Digital Health</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css?v=5">
+    <link rel="stylesheet" href="assets/css/animations.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --accent-teal: #0d9488;
+            --accent-emerald: #059669;
+            --accent-blue: #0284c7;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Hind Siliguri', sans-serif;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ------------------ Background Animated Orbs ------------------ */
+        .bg-orbs {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: #f8fafc;
+        }
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: floatOrb 20s infinite alternate ease-in-out;
+        }
+        .orb-1 {
+            width: 500px; height: 500px;
+            background: rgba(13, 148, 136, 0.3); /* Teal */
+            top: -100px; left: -100px;
+        }
+        .orb-2 {
+            width: 600px; height: 600px;
+            background: rgba(5, 150, 105, 0.25); /* Emerald */
+            bottom: -200px; right: -100px;
+            animation-delay: -5s;
+        }
+        .orb-3 {
+            width: 400px; height: 400px;
+            background: rgba(2, 132, 199, 0.2); /* Light Blue */
+            top: 40%; left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -10s;
+        }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, 30px) scale(1.1); }
+            100% { transform: translate(-30px, 50px) scale(0.9); }
+        }
+
+        /* ------------------ Typography ------------------ */
+        .text-gradient {
+            background: linear-gradient(135deg, var(--accent-emerald), var(--accent-teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        /* ------------------ Glassmorphism Components ------------------ */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            border-radius: 2rem;
+        }
+
+        .btn-premium {
+            background: linear-gradient(135deg, var(--accent-emerald), var(--accent-teal));
+            color: white;
+            padding: 16px 36px;
+            font-size: 1.15rem;
+            border-radius: 50px;
+            font-weight: 700;
+            border: none;
+            box-shadow: 0 10px 25px rgba(13, 148, 136, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-premium:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px rgba(13, 148, 136, 0.5);
+            color: white;
+        }
+
+        /* ------------------ Hero Section ------------------ */
+        .hero-section {
+            padding: 110px 0 80px 0;
+            position: relative;
+        }
+        .hero-title {
+            font-size: 4.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+        }
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            line-height: 1.7;
+            font-weight: 400;
+        }
+        
+        .hero-mockup-container {
+            position: relative;
+            z-index: 10;
+        }
+        .hero-mockup {
+            width: 100%;
+            max-width: 380px;
+            border-radius: 2.5rem;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15), 0 0 0 10px rgba(255,255,255,0.5);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating-badge {
+            position: absolute;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 20;
+            animation: float 5s ease-in-out infinite alternate;
+        }
+        .badge-1 { top: 10%; right: -20px; }
+        .badge-2 { bottom: 15%; left: -40px; animation-delay: -2.5s; }
+
+        /* ------------------ Bento Box Grid ------------------ */
+        .bento-section {
+            padding: 80px 0;
+        }
+        
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+            grid-auto-rows: minmax(280px, auto);
+        }
+
+        .bento-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.8);
+            border-radius: 2rem;
+            padding: 2.5rem;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 30px;
+        }
+        .bento-card:hover {
+            transform: translateY(-5px) scale(1.01);
+            box-shadow: 0 20px 40px rgba(13, 148, 136, 0.1);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        @media (min-width: 992px) {
+            .bento-horizontal {
+                flex-direction: row;
+                align-items: center;
+                gap: 30px;
+                padding: 20px 40px;
+            }
+            .bento-horizontal .bento-content {
+                flex: 1;
+                text-align: left;
+            }
+            .bento-horizontal .bento-img-container {
+                flex: 1;
+                margin: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .bento-horizontal:nth-child(even) {
+                flex-direction: row-reverse;
+            }
+            .bento-horizontal:nth-child(even) .bento-content {
+                text-align: right;
+            }
+            .bento-horizontal:nth-child(even) .bento-icon {
+                margin-left: auto;
+                margin-right: 0;
+            }
+        }
+
+        /* Specific Bento Sizing */
+        .bento-large { grid-column: span 8; }
+        .bento-medium { grid-column: span 4; }
+        .bento-full { grid-column: span 12; }
+
+        .bento-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, rgba(13,148,136,0.1), rgba(5,150,105,0.1));
+            color: var(--accent-emerald);
+        }
+
+        .bento-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+        .bento-desc {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .bento-img-container {
+            flex-grow: 1;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            margin-top: 2rem;
+            margin-bottom: -2.5rem; /* pull image to bottom edge */
+        }
+        .bento-mockup {
+            width: 80%;
+            border-radius: 1.5rem 1.5rem 0 0;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.5s ease;
+        }
+        .bento-card:hover .bento-mockup {
+            transform: translateY(-10px);
+        }
+
+        /* ------------------ Heartbeat Animation ------------------ */
+        .heartbeat-wrapper {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255,255,255,0.7);
+            padding: 8px 20px;
+            border-radius: 50px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+        }
+        .ekg-line {
+            stroke-dasharray: 150;
+            stroke-dashoffset: 150;
+            animation: drawEKG 2.5s infinite linear;
+        }
+        @keyframes drawEKG {
+            0% { stroke-dashoffset: 150; }
+            40% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: -150; }
+        }
+
+        /* ------------------ Small Features Grid ------------------ */
+        .small-feat-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+        .small-feat-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.8);
+            border-radius: 1.5rem;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+        }
+        .small-feat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(13, 148, 136, 0.1);
+        }
+        .small-feat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.2rem;
+        }
+
+        /* ------------------ Responsive ------------------ */
+        @media (max-width: 991px) {
+            .hero-title { font-size: 3.5rem; }
+            .bento-medium { grid-column: span 6; }
+            .badge-1, .badge-2 { display: none; }
+            .hero-mockup { margin-top: 3rem; }
+            .small-feat-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 576px) {
+            .hero-title { font-size: 2.5rem; }
+            .bento-medium { grid-column: span 12; }
+            .bento-card { padding: 1.5rem; }
+            .bento-icon { width: 50px; height: 50px; font-size: 1.5rem; }
+            .bento-title { font-size: 1.4rem; }
+            .small-feat-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Top Navbar Fix */
+        @media (min-width: 1200px) {
+            .navbar-nav .nav-link { font-size: 0.95rem !important; padding: 0 0.6rem !important; white-space: nowrap; }
+            .navbar-brand { font-size: 1.2rem !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Orbs -->
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-right">
+                    
+                    <div class="heartbeat-wrapper">
+                        <i class="fa-solid fa-heart fa-beat text-danger me-2" style="font-size: 1.5rem;"></i>
+                        <svg width="80" height="24" viewBox="0 0 120 40">
+                            <polyline class="ekg-line" points="0,20 30,20 40,5 50,35 60,20 120,20" fill="none" stroke="#ef4444" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <span class="ms-2 fw-bold" style="color: var(--accent-emerald);">স্মার্ট হেলথ পার্টনার</span>
+                    </div>
+
+                    <h1 class="hero-title">আপনার <span class="text-gradient">ডিজিটাল হেলথ</span> গাইড</h1>
+                    <p class="hero-subtitle">
+                        HealthCare Plus-এ স্বাগতম! আর্টিফিশিয়াল ইন্টেলিজেন্স (AI) নির্ভর স্মার্ট হেলথ সল্যুশন, লাইভ ম্যাপ, পার্সোনাল ড্যাশবোর্ড এবং হাজারো স্বাস্থ্য তথ্যের এক বিশাল ভাণ্ডার এখন আপনার হাতের মুঠোয়।
+                    </p>
+                    
+                    <div>
+                        <a href="subscribe.html?v=fresh" class="btn-premium">
+                            এখনি শুরু করুন <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                        <p class="mt-3 fw-bold" style="color: #0f172a; font-size: 0.95rem; background: rgba(255,255,255,0.7); padding: 6px 12px; border-radius: 8px; display: inline-block; border: 1px solid rgba(0,0,0,0.05);">
+                            <i class="fa-solid fa-shield-check text-success"></i> 5.56 BDT/daily including (VAT+SD+Sc) with Auto Renewal
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 text-center hero-mockup-container" data-aos="fade-left" data-aos-delay="200">
+                    <div class="floating-badge badge-1">
+                        <div class="rounded-circle bg-success-subtle p-3 text-success fs-4">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <div class="text-start">
+                            <h6 class="mb-0 fw-bold text-dark">AI Doctor</h6>
+                            <small class="text-muted">24/7 Available</small>
+                        </div>
+                    </div>
+                    
+                    <img src="assets/img/ui_dashboard_1785025393784.png" alt="HealthCare Plus App" class="hero-mockup">
+                    
+                    <div class="floating-badge badge-2">
+                        <div class="rounded-circle bg-info-subtle p-3 text-info fs-4">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                        <div class="text-start">
+                            <h6 class="mb-0 fw-bold text-dark">Health Track</h6>
+                            <small class="text-muted">Personal Dashboard</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bento Box Features -->
+    <section class="bento-section">
+        <div class="container">
+            <div class="text-center mb-5 pb-3" data-aos="fade-up">
+                <h2 class="fs-2 fw-bold text-dark mb-2">আমাদের <span class="text-gradient">স্মার্ট ফিচারসমূহ</span></h2>
+                <p class="text-muted fs-6 max-w-700 mx-auto">HealthCare Plus এর প্রিমিয়াম ও আকর্ষণীয় সার্ভিসগুলো এক নজরে দেখে নিন</p>
+            </div>
+
+            <div class="bento-grid" style="display: block;">
+                
+                <!-- Card 1: Dashboard -->
+                <div class="bento-card bento-horizontal" data-aos="fade-up" data-aos-delay="100">
+                    <div class="bento-content">
+                        <div class="bento-icon"><i class="fa-solid fa-chart-pie"></i></div>
+                        <h3 class="bento-title">পার্সোনাল ড্যাশবোর্ড</h3>
+                        <p class="bento-desc">আপনার প্রতিদিনের ব্লাড প্রেসার, সুগার, ওজন এবং ক্যালরি ট্র্যাক করুন।</p>
+                    </div>
+                    <div class="bento-img-container">
+                        <img src="assets/img/ui_dashboard_1785025393784.png" class="bento-mockup" alt="Dashboard UI" style="max-width: 220px; width: 100%;">
+                    </div>
+                </div>
+
+                <!-- Card 2: Chatbot -->
+                <div class="bento-card bento-horizontal" data-aos="fade-up" data-aos-delay="200">
+                    <div class="bento-content">
+                        <div class="bento-icon" style="color: #0284c7; background: rgba(2,132,199,0.1);"><i class="fa-solid fa-robot"></i></div>
+                        <h3 class="bento-title">AI চ্যাটবট</h3>
+                        <p class="bento-desc">যেকোনো শারীরিক সমস্যা বা লক্ষণের কথা চ্যাটবটকে জানালেই তাৎক্ষণিক সেফ ঘরোয়া পরামর্শ দেবে।</p>
+                    </div>
+                    <div class="bento-img-container">
+                        <img src="assets/img/ui_chatbot_1785025364573.png" class="bento-mockup" alt="Chatbot UI" style="max-width: 220px; width: 100%;">
+                    </div>
+                </div>
+
+                <!-- Card 3: Scanner -->
+                <div class="bento-card bento-horizontal" data-aos="fade-up" data-aos-delay="300">
+                    <div class="bento-content">
+                        <div class="bento-icon" style="color: #ea580c; background: rgba(234,88,12,0.1);"><i class="fa-solid fa-expand"></i></div>
+                        <h3 class="bento-title">AI Meal স্ক্যানার</h3>
+                        <p class="bento-desc">খাবারের ছবি তুললেই আমাদের ML মডেল ক্যালরি, প্রোটিন ও ফ্যাট হিসাব করে দেবে।</p>
+                    </div>
+                    <div class="bento-img-container">
+                        <img src="assets/img/ui_scanner_1785025373985.png" class="bento-mockup" alt="Scanner UI" style="max-width: 220px; width: 100%;">
+                    </div>
+                </div>
+
+                <!-- Card 4: Live Map -->
+                <div class="bento-card bento-horizontal" data-aos="fade-up" data-aos-delay="400">
+                    <div class="bento-content">
+                        <div class="bento-icon" style="color: #db2777; background: rgba(219,39,119,0.1);"><i class="fa-solid fa-map-location-dot"></i></div>
+                        <h3 class="bento-title">Nearby লাইভ ম্যাপ</h3>
+                        <p class="bento-desc">আশেপাশের হাসপাতাল, ২৪ ঘণ্টার ফার্মেসি এবং ব্লাড ব্যাংক ম্যাপে খুঁজে বের করুন।</p>
+                    </div>
+                    <div class="bento-img-container">
+                        <img src="assets/img/ui_map_1785025384296.png" class="bento-mockup" alt="Map UI" style="max-width: 220px; width: 100%;">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Other Features Section -->
+    <section class="py-5 mb-5">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <h3 class="fs-3 fw-bold text-dark">এছাড়াও রয়েছে <span class="text-gradient">আরও অনেক সুবিধা</span></h3>
+            </div>
+            
+            <div class="small-feat-grid">
+                <!-- Box 1 -->
+                <div class="small-feat-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="small-feat-icon" style="color: #059669;"><i class="fa-solid fa-stethoscope"></i></div>
+                    <h5 class="fw-bold text-dark">রোগব্যাধি তথ্য</h5>
+                    <p class="text-muted small mb-0">শত শত রোগের লক্ষণ ও কারণ সম্পর্কে বিস্তারিত তথ্য।</p>
+                </div>
+                <!-- Box 2 -->
+                <div class="small-feat-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="small-feat-icon" style="color: #e11d48;"><i class="fa-solid fa-apple-whole"></i></div>
+                    <h5 class="fw-bold text-dark">পুষ্টি ও স্বাস্থ্য</h5>
+                    <p class="text-muted small mb-0">সুস্থ থাকার জন্য প্রতিদিনের সঠিক ডায়েট ও পুষ্টির গাইডলাইন।</p>
+                </div>
+                <!-- Box 3 -->
+                <div class="small-feat-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="small-feat-icon" style="color: #d97706;"><i class="fa-solid fa-calculator"></i></div>
+                    <h5 class="fw-bold text-dark">হেলথ ক্যালকুলেটর</h5>
+                    <p class="text-muted small mb-0">BMI, BMR ও প্রেগনেন্সি ডেট ক্যালকুলেটর।</p>
+                </div>
+                <!-- Box 4 -->
+                <div class="small-feat-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="small-feat-icon" style="color: #0284c7;"><i class="fa-solid fa-house-medical"></i></div>
+                    <h5 class="fw-bold text-dark">ঘরোয়া যত্ন</h5>
+                    <p class="text-muted small mb-0">বিভিন্ন শারীরিক সমস্যার জন্য প্রাথমিক ও ঘরোয়া সমাধান।</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-4 mt-5 text-center" style="background: rgba(255,255,255,0.5); backdrop-filter: blur(10px);">
+        <p class="text-muted mb-0 small fw-bold">&copy; 2026 HealthCare Plus. সর্বস্বত্ব সংরক্ষিত。</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({duration: 800, once: true});
+        
+        if (localStorage.getItem('isSubscribed') === 'true') {
+            window.location.href = 'home.html';
+        }
+    </script>
+</body>
+</html>

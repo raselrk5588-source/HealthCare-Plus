@@ -1,0 +1,303 @@
+﻿<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="মেডিকেল রিপোর্ট ও প্রেসক্রিপশন স্ক্যানার। HealthCare Plus।">
+    <title>Document Scanner - HealthCare Plus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css?v=3">
+    <link rel="stylesheet" href="assets/css/animations.css">
+    <style>
+        .scanner-container {
+            position: relative;
+            width: 100%;
+            max-width: 380px;
+            height: 500px;
+            margin: 0 auto;
+            border-radius: 15px;
+            overflow: hidden;
+            background: rgba(0,0,0,0.4);
+            border: 2px dashed rgba(255,255,255,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            transition: all 0.3s ease;
+        }
+        .scanner-container.active {
+            border: 2px solid #00c853;
+            box-shadow: 0 0 20px rgba(0, 200, 83, 0.3);
+            background: #000;
+        }
+        .scanner-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #00c853;
+            box-shadow: 0 0 15px #00c853, 0 0 30px #00c853;
+            opacity: 0;
+            z-index: 10;
+        }
+        .scanner-container.scanning .scanner-line {
+            opacity: 1;
+            animation: scanAnim 2.5s linear infinite;
+        }
+        @keyframes scanAnim {
+            0% { top: 0; }
+            50% { top: 100%; }
+            100% { top: 0; }
+        }
+        .scan-target {
+            position: absolute;
+            width: 85%;
+            height: 90%;
+            border: 2px solid rgba(0,200,83,0.5);
+            border-radius: 5px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .scanner-container.scanning .scan-target {
+            opacity: 1;
+        }
+        
+        .result-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
+            color: white;
+            display: none;
+        }
+        
+        #uploadedImage {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            opacity: 0;
+            z-index: 1;
+            background: #fff;
+        }
+        #uploadedImage.visible {
+            opacity: 0.7;
+        }
+    </style>
+    <script src="assets/js/auth.js"></script>
+
+<style>
+    @media (min-width: 1200px) {
+        .navbar-nav .nav-link {
+            font-size: 0.95rem !important;
+            padding-left: 0.6rem !important;
+            padding-right: 0.6rem !important;
+            white-space: nowrap;
+        }
+        .navbar-brand {
+            font-size: 1.2rem !important;
+        }
+    }
+</style>
+</head>
+<body style="background: #0f172a; color: white;">
+
+<nav class="navbar navbar-expand-xl navbar-light fixed-top glass-nav">
+    <div class="container-fluid px-xl-5">
+        <a class="navbar-brand fw-bold" href="home.html">
+            <i class="fa-solid fa-notes-medical"></i> HealthCare Plus
+        </a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="home.html">হোম</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="diseases.html">রোগব্যাধি</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="home_care.html">ঘরোয়া যত্ন</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="nutrition.html">পুষ্টি ও স্বাস্থ্য</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="calculators.html">ক্যালকুলেটর</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">ডিরেক্টরি</a>
+                    <ul class="dropdown-menu glass-dropdown">
+                        <li><a class="dropdown-item fw-bold text-primary" href="nearby.html"><i class="fa-solid fa-location-dot me-2"></i>লাইভ ম্যাপ (Nearby)</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item fw-bold" href="district_info.html"><i class="fa-solid fa-map-location-dot me-2"></i>জেলা ভিত্তিক তথ্য</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="doctors.html"><i class="fa-solid fa-user-doctor me-2"></i>ডাক্তার</a></li>
+                        <li><a class="dropdown-item" href="hospitals.html"><i class="fa-solid fa-hospital me-2"></i>হাসপাতাল</a></li>
+                        <li><a class="dropdown-item" href="pharmacies.html"><i class="fa-solid fa-pills me-2"></i>ফার্মেসি</a></li>
+                        <li><a class="dropdown-item" href="blood_banks.html"><i class="fa-solid fa-droplet me-2"></i>ব্লাড ব্যাংক</a></li>
+                        <li><a class="dropdown-item" href="ambulances.html"><i class="fa-solid fa-truck-medical me-2"></i>অ্যাম্বুলেন্স</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-bold text-info" href="chatbot.html"><i class="fa-solid fa-robot me-1"></i> AI চ্যাটবট</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-bold text-success" href="scanner.html"><i class="fa-solid fa-expand me-1"></i> AI Meal স্ক্যানার</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-bold text-danger" href="documents.html"><i class="fa-solid fa-folder-open me-1"></i>ডকুমেন্ট ফোল্ডার</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-bold text-primary" href="dashboard.html"><i class="fa-solid fa-chart-pie me-1"></i>ড্যাশবোর্ড</a>
+                </li>
+                <li class="nav-item ms-lg-2">
+                    <a class="nav-link btn btn-outline-danger text-danger rounded-pill px-4 fw-bold hover-white" href="#" onclick="event.preventDefault(); window.unsubscribeUser();">
+                        <i class="fa-solid fa-sign-out-alt me-1"></i> আনসাবস্ক্রাইব
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container" style="padding-top: 60px; padding-bottom: 30px;">
+    <div class="text-center mb-2 mb-md-3" data-aos="fade-down">
+        <div class="d-none d-md-inline-block p-2 rounded-circle mb-3" style="background: rgba(0, 200, 83, 0.1);">
+            <i class="fa-solid fa-file-medical fa-3x" style="color: #00c853;"></i>
+        </div>
+        <h2 class="fw-bold text-white fs-4 fs-md-2 mb-0 mb-md-2">মেডিকেল ডকুমেন্ট স্ক্যানার</h2>
+        <p class="text-white-50 d-none d-md-block">প্রেসক্রিপশন বা মেডিকেল রিপোর্ট স্ক্যান করে সরাসরি ড্যাশবোর্ডে সংরক্ষণ করুন।</p>
+    </div>
+
+    <div class="row align-items-center">
+        <!-- Scanner Area -->
+        <div class="col-lg-5 mb-5 mb-lg-0" data-aos="fade-right">
+            <div class="scanner-container" id="scannerContainer">
+                <img id="uploadedImage" src="" alt="Document">
+                <video id="cameraStream" autoplay playsinline class="d-none" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;"></video>
+                <div class="scanner-line"></div>
+                <div class="scan-target"><div class="scan-target-inner"></div></div>
+                
+                <!-- Live Camera Controls -->
+                <div id="cameraControls" class="position-absolute bottom-0 w-100 text-center pb-4 d-none" style="z-index: 5;">
+                    <button onclick="captureLiveImage()" class="btn btn-danger rounded-circle shadow-lg" style="width: 65px; height: 65px; border: 3px solid white;" title="ছবি তুলুন">
+                        <i class="fa-solid fa-camera fs-3"></i>
+                    </button>
+                    <button onclick="stopLiveCamera()" class="position-absolute btn btn-dark bg-opacity-50 text-white rounded-circle shadow" style="right: 20px; bottom: 35px; width: 45px; height: 45px;" title="বন্ধ করুন">
+                        <i class="fa-solid fa-xmark fs-5"></i>
+                    </button>
+                </div>
+                
+                <div id="scannerUI" class="text-center p-4" style="z-index: 2;">
+                    <i class="fa-solid fa-file-arrow-up fa-3x mb-3 text-white-50"></i>
+                    <h5 class="text-white mb-4">ডকুমেন্ট আপলোড করুন</h5>
+                    
+                    <input type="file" id="fileInput" accept="image/*,application/pdf" class="d-none">
+                    
+                    <div class="d-flex flex-column gap-3">
+                        <select class="form-select bg-dark text-white border-secondary mb-2" id="docType">
+                            <option value="prescription">প্রেসক্রিপশন (Prescription)</option>
+                            <option value="report">মেডিকেল রিপোর্ট (Medical Report)</option>
+                        </select>
+                        <button onclick="document.getElementById('fileInput').click()" class="btn btn-outline-success rounded-pill px-4 py-2">
+                            <i class="fa-regular fa-image me-2"></i> গ্যালারি থেকে নিন
+                        </button>
+                        <button onclick="startLiveCamera()" class="btn btn-success text-white fw-bold rounded-pill px-4 py-2">
+                            <i class="fa-solid fa-camera me-2"></i> লাইভ ক্যামেরা ওপেন করুন
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="scanningText" class="position-absolute bottom-0 w-100 text-center pb-3 d-none" style="z-index: 2;">
+                    <span class="badge bg-success text-white px-3 py-2 rounded-pill shadow-sm">
+                        <i class="fa-solid fa-circle-notch fa-spin me-2"></i> ডেটা এক্সট্র্যাক্ট করা হচ্ছে...
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Area -->
+        <div class="col-lg-7" data-aos="fade-left">
+            <div id="resultPlaceholder" class="text-center text-white-50 py-5">
+                <i class="fa-solid fa-server fa-4x mb-3 opacity-50"></i>
+                <h4>ফাইল সেভ করার জন্য অপেক্ষা করা হচ্ছে...</h4>
+                <p>ডকুমেন্ট আপলোড সম্পন্ন হলে এটি অটোমেটিকভাবে আপনার ড্যাশবোর্ডে সেভ হয়ে যাবে।</p>
+            </div>
+            
+            <div id="resultCard" class="result-card p-4 p-md-5">
+                <div class="text-center mb-4">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-success text-white rounded-circle mb-3" style="width:60px; height:60px; font-size:24px;">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <h3 class="fw-bold text-success">ফাইল সেভ হয়েছে!</h3>
+                    <p class="text-white-50">আপনার ডকুমেন্টটি ড্যাশবোর্ডের ফোল্ডারে সফলভাবে সংরক্ষণ করা হয়েছে।</p>
+                </div>
+                
+                <div class="p-3 rounded-3 mb-4" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.1);">
+                    <h6 class="fw-bold mb-3 border-bottom pb-2 border-secondary"><i class="fa-solid fa-file-lines me-2"></i> ফাইলের তথ্য</h6>
+                    <ul class="list-unstyled mb-0 text-white-50 small" id="previewList">
+                        <!-- Filled by JS -->
+                    </ul>
+                </div>
+                
+                <div class="mt-4 text-center">
+                    <a href="dashboard.html" class="btn btn-primary rounded-pill px-5 py-2 fw-bold w-100">
+                        <i class="fa-solid fa-chart-pie me-2"></i> ড্যাশবোর্ডে ফিরে যান
+                    </a>
+                    <button onclick="resetScanner()" class="btn btn-link text-white-50 mt-2">আরেকটি স্ক্যান করুন</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="assets/js/doc_scanner.js"></script>
+<script>AOS.init({duration: 800, once: true});</script>
+
+<!-- Universal Footer Card -->
+<style>
+    @media (max-width: 767px) { body { padding-bottom: 60px !important; } }
+    .universal-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-top: 3px solid #0072ff !important;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
+        z-index: 1050;
+        padding: 12px 20px;
+        text-align: center;
+        color: #ffffff;
+        font-size: 0.9rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+    }
+</style>
+<div class="universal-footer d-md-none">
+    <i class="fa-solid fa-heart-pulse text-danger"></i> 
+    <span>&copy; ২০২৬ HealthCare Plus. সর্বস্বত্ব সংরক্ষিত।</span>
+</div>
+
+</body>
+</html>

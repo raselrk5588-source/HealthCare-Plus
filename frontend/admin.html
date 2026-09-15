@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthCare Plus - CMS Admin</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --dark: #1e1e24;
+            --sidebar-bg: #2b2b4e; /* Deep indigo from image */
+            --bg-color: #f4f7fe;   /* Modern light grey/blue */
+        }
+
+        /* Premium SweetAlert2 Customization */
+        .swal2-premium-popup {
+            border-radius: 24px !important;
+            padding: 2em !important;
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(15px) !important;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1) !important;
+            border: 1px solid rgba(255, 255, 255, 0.5) !important;
+        }
+        .swal2-premium-title {
+            font-family: 'Inter', 'Hind Siliguri', sans-serif !important;
+            font-weight: 700 !important;
+            color: #1e293b !important;
+        }
+        .swal2-premium-text {
+            color: #64748b !important;
+            font-family: 'Inter', 'Hind Siliguri', sans-serif !important;
+        }
+        .swal2-premium-confirm, .swal2-premium-cancel {
+            border-radius: 12px !important;
+            font-weight: 600 !important;
+            padding: 12px 24px !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important;
+            transition: all 0.3s ease !important;
+        }
+        .swal2-premium-confirm:hover, .swal2-premium-cancel:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+        }
+
+        body {
+            font-family: 'Inter', 'Hind Siliguri', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+            margin: 0;
+        }
+
+        /* Sidebar - Image Matching Style */
+        .sidebar {
+            background-color: var(--sidebar-bg);
+            min-height: 100vh;
+            padding: 30px 0 30px 20px; /* Right padding 0 to make active tab flush */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 320px; /* Increased from 280px */
+            z-index: 100;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+
+        .sidebar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding-right: 20px; /* offset the asymmetric padding */
+        }
+
+        .sidebar-brand i {
+            font-size: 1.8rem;
+            color: #fff;
+        }
+
+        .nav-link-custom {
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+            font-size: 1.05rem;
+            padding: 16px 25px;
+            border-radius: 30px 0 0 30px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Ultra smooth */
+            text-decoration: none;
+            position: relative;
+        }
+
+        .nav-link-custom i {
+            font-size: 1.4rem;
+            width: 26px;
+            text-align: center;
+            transition: color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .nav-link-custom:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateX(6px); /* Smooth slide effect on hover */
+        }
+
+        /* The Cut-Out Active State Magic */
+        .nav-link-custom.active {
+            background-color: var(--bg-color);
+            color: var(--primary);
+            font-weight: 600;
+            transform: translateX(0); /* Reset transform for active state */
+        }
+        
+        .nav-link-custom.active i {
+            color: var(--primary);
+        }
+
+        .nav-link-custom.active::before,
+        .nav-link-custom.active::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            width: 30px;
+            height: 30px;
+            background-color: transparent;
+            pointer-events: none;
+            transition: all 0.4s ease;
+        }
+
+        .nav-link-custom.active::before {
+            top: -30px;
+            border-bottom-right-radius: 30px;
+            box-shadow: 15px 15px 0 15px var(--bg-color);
+        }
+
+        .nav-link-custom.active::after {
+            bottom: -30px;
+            border-top-right-radius: 30px;
+            box-shadow: 15px -15px 0 15px var(--bg-color);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 320px; /* Increased to match sidebar width */
+            padding: 50px 50px 0 50px; /* Reduced bottom padding */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Smooth Section Fade In */
+        .content-section {
+            animation: fadeInSection 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        @keyframes fadeInSection {
+            0% { opacity: 0; transform: translateY(15px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Glass/Premium Cards */
+        .glass-panel {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: var(--dark);
+            margin: 0;
+        }
+
+        .btn-modern {
+            background: var(--sidebar-bg);
+            border: none;
+            border-radius: 12px;
+            padding: 12px 24px;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(43, 43, 78, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .btn-modern:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(43, 43, 78, 0.4);
+            color: white;
+        }
+
+        /* Table Styling */
+        .table-custom {
+            margin-bottom: 0;
+            border-collapse: separate;
+            border-spacing: 0 12px;
+        }
+
+        .table-custom th {
+            border: none;
+            font-weight: 600;
+            color: #a0aec0;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            padding: 0 20px 10px 20px;
+        }
+
+        .table-custom tbody tr {
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            border-radius: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .table-custom tbody tr:hover {
+            transform: scale(1.01);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+            border: 1px solid rgba(67, 97, 238, 0.1);
+        }
+
+        .table-custom td {
+            border: none;
+            border-top: 1px solid #f8f9fa;
+            border-bottom: 1px solid #f8f9fa;
+            padding: 18px 20px;
+            vertical-align: middle;
+            color: #2d3748;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .table-custom td:first-child { 
+            border-left: 1px solid #f8f9fa;
+            border-top-left-radius: 12px; 
+            border-bottom-left-radius: 12px; 
+        }
+        .table-custom td:last-child { 
+            border-right: 1px solid #f8f9fa;
+            border-top-right-radius: 12px; 
+            border-bottom-right-radius: 12px; 
+        }
+
+        /* Footer */
+        .admin-footer {
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: auto;
+            margin-bottom: 25px;
+            background: #ffffff;
+            border-radius: 24px;
+            border: 1px solid #edf2f7;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+        }
+
+        /* Action Buttons */
+        .action-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            transition: all 0.2s;
+            margin-right: 8px;
+            font-size: 0.9rem;
+        }
+
+        .btn-edit { background: #f1f5f9; color: var(--primary); }
+        .btn-edit:hover { background: var(--primary); color: white; }
+        
+        .btn-delete { background: #fee2e2; color: #ef4444; }
+        .btn-delete:hover { background: #ef4444; color: white; }
+
+        /* Modal Modernization */
+        .modal-content {
+            border: none;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+        }
+        
+        .modal-header {
+            background: #ffffff;
+            border-bottom: 1px solid #edf2f7;
+            padding: 25px 30px;
+        }
+
+        .modal-title {
+            color: var(--dark);
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .btn-close {
+            background-color: #f1f5f9;
+            border-radius: 50%;
+            padding: 10px;
+            opacity: 0.7;
+        }
+
+        .modal-body {
+            padding: 30px;
+            background: #f8fafc;
+        }
+
+        .modal-footer {
+            background: #ffffff;
+            border-top: 1px solid #edf2f7;
+        }
+
+        .form-control {
+            border-radius: 12px;
+            padding: 12px 16px;
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+            border-color: var(--primary);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #4a5568;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .text-muted.small {
+            color: rgba(255, 255, 255, 0.4) !important;
+        }
+
+        /* Responsive & Mobile View Fixes */
+        @media (max-width: 991.98px) {
+            .sidebar { 
+                transform: translateX(-100%); 
+                transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); /* Super smooth slide */
+                border-radius: 0; 
+                padding-right: 20px; 
+                box-shadow: 10px 0 50px rgba(0,0,0,0.2);
+            }
+            .sidebar.show { 
+                transform: translateX(0); 
+            }
+            .main-content { 
+                margin-left: 0; 
+                padding: 15px 15px 0 15px; 
+            }
+            .mobile-toggle { 
+                background: #ffffff;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+                border-bottom: 1px solid #edf2f7;
+            }
+            
+            /* Disable cut-out effect on mobile since it overlaps */
+            .nav-link-custom { 
+                border-radius: 15px; /* Full rounded corners */
+            }
+            .nav-link-custom.active {
+                border-radius: 15px;
+                background-color: var(--primary);
+                color: #ffffff;
+            }
+            .nav-link-custom.active i {
+                color: #ffffff;
+            }
+            .nav-link-custom.active::before,
+            .nav-link-custom.active::after { 
+                display: none; /* Hide the curves */
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Mobile Header Toggle (Visible only on small screens) -->
+<div class="d-lg-none p-3 shadow-sm d-flex justify-content-between align-items-center mobile-toggle">
+    <h5 class="mb-0 fw-bold" style="color: var(--sidebar-bg);"><i class="fa-solid fa-notes-medical"></i> CMS Admin</h5>
+    <div class="d-flex gap-2">
+        <button class="btn text-danger" onclick="adminLogout()" style="background: rgba(239, 35, 60, 0.1); border-radius: 8px;"><i class="fa-solid fa-power-off"></i></button>
+        <button class="btn btn-light" id="sidebarToggle" style="border: 1px solid #e2e8f0; border-radius: 8px;"><i class="fa-solid fa-bars fa-lg"></i></button>
+    </div>
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+        <i class="fa-solid fa-notes-medical"></i>
+        <span>HealthCare</span>
+    </div>
+    
+    <div class="nav flex-column">
+        <p class="text-muted small fw-bold px-3 mb-2 text-uppercase letter-spacing-1">ম্যানেজমেন্ট প্যানেল</p>
+        <a href="#" class="nav-link-custom" data-type="appointment">
+            <i class="fa-solid fa-calendar-check"></i> অ্যাপয়েন্টমেন্ট
+        </a>
+        <a href="#" class="nav-link-custom" data-type="doctor">
+            <i class="fa-solid fa-user-doctor"></i> ডাক্তার
+        </a>
+        <a href="#" class="nav-link-custom active" data-type="hospital">
+            <i class="fa-solid fa-hospital"></i> হাসপাতাল
+        </a>
+        <a href="#" class="nav-link-custom" data-type="pharmacy">
+            <i class="fa-solid fa-pills"></i> ফার্মেসি
+        </a>
+        <a href="#" class="nav-link-custom" data-type="bloodbank">
+            <i class="fa-solid fa-droplet"></i> ব্লাড ব্যাংক
+        </a>
+        <a href="#" class="nav-link-custom" data-type="ambulance">
+            <i class="fa-solid fa-truck-medical"></i> অ্যাম্বুলেন্স
+        </a>
+        
+        <p class="text-muted small fw-bold px-3 mt-4 mb-2 text-uppercase letter-spacing-1">কনটেন্ট প্যানেল</p>
+        <a href="#" class="nav-link-custom" data-type="disease">
+            <i class="fa-solid fa-viruses"></i> রোগব্যাধি
+        </a>
+        <a href="#" class="nav-link-custom" data-type="homecare">
+            <i class="fa-solid fa-leaf"></i> ঘরোয়া যত্ন
+        </a>
+        <a href="#" class="nav-link-custom" data-type="nutrition">
+            <i class="fa-solid fa-apple-whole"></i> পুষ্টি ও স্বাস্থ্য
+        </a>
+
+        <div class="mt-auto pt-4">
+            <a href="home.html" class="nav-link-custom mb-2" style="background: rgba(67, 97, 238, 0.05); color: var(--primary);">
+                <i class="fa-solid fa-globe"></i> সাইটে ফিরে যান
+            </a>
+            <a href="#" onclick="adminLogout()" class="nav-link-custom text-danger" style="background: rgba(239, 35, 60, 0.05);">
+                <i class="fa-solid fa-power-off"></i> লগআউট করুন
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+    <div class="glass-panel">
+        <div class="page-header">
+            <div>
+                <h2 class="page-title" id="pageTitle">হাসপাতাল তালিকা</h2>
+                <p class="text-muted mt-1 mb-0">আপনার ডেটাবেসের কনটেন্ট পরিচালনা করুন</p>
+            </div>
+            <button class="btn-modern" data-bs-toggle="modal" data-bs-target="#itemModal" onclick="openAddModal()">
+                <i class="fa-solid fa-plus me-1"></i> নতুন যোগ করুন
+            </button>
+        </div>
+        
+        <div class="table-responsive" style="overflow-x: visible;">
+            <table class="table table-custom">
+                <thead id="tableHead">
+                    <!-- Dynamic Headers -->
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Dynamic Rows -->
+                </tbody>
+            </table>
+            
+            <div id="loadingIndicator" class="text-center my-5 d-none">
+                <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2 text-muted">ডেটা লোড হচ্ছে...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Footer -->
+    <footer class="admin-footer">
+        <div class="d-flex justify-content-center align-items-center gap-2 mb-2">
+            <i class="fa-solid fa-notes-medical" style="color: var(--primary);"></i>
+            <span class="fw-semibold" style="color: #475569;">HealthCare Plus Admin</span>
+        </div>
+        <p class="mb-0">© ২০২৬ সর্বস্বত্ব সংরক্ষিত | সিস্টেম ম্যানেজমেন্ট পোর্টাল</p>
+    </footer>
+</div>
+
+<!-- Modal for Add/Edit -->
+<div class="modal fade" id="itemModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitle">নতুন যোগ করুন</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="itemForm">
+            <div class="alert border-0 rounded-3 shadow-sm mb-4" style="background: rgba(67, 97, 238, 0.05); color: #4361ee; font-size: 0.9rem;">
+                <div class="d-flex align-items-center">
+                    <i class="fa-solid fa-lightbulb fa-lg me-3"></i>
+                    <div>
+                        <strong>সাজেশন:</strong> আইকন যুক্ত করতে <a href="https://fontawesome.com/search?o=r&m=free" target="_blank" class="fw-bold" style="color:var(--primary);text-decoration:none;">FontAwesome</a> এর ফ্রি আইকনের নাম ব্যবহার করুন (যেমন: <code>fa-virus</code>)। রঙের জন্য Bootstrap কালার দিন (যেমন: <code>primary</code>, <code>danger</code>)।
+                    </div>
+                </div>
+            </div>
+            <!-- Dynamic Form Fields will be inserted here -->
+            <div id="dynamicFormFields" class="row g-4"></div>
+        </form>
+      </div>
+      <div class="modal-footer border-top-0 pt-0 pb-4 px-4">
+        <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">বন্ধ করুন</button>
+        <button type="button" class="btn btn-modern px-5" onclick="saveItem()">সংরক্ষণ করুন</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Logout Confirmation Modal -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius: 24px; text-align: center; padding: 40px 20px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);">
+      <div class="modal-body">
+        <div class="mb-4 mt-2">
+            <div class="d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px; border-radius: 50%; background: #fee2e2; color: #ef4444;">
+                <i class="fa-solid fa-arrow-right-from-bracket fa-2xl" style="font-size: 2.2em;"></i>
+            </div>
+        </div>
+        <h4 class="fw-bold mb-4">লগআউট করতে চান?</h4>
+        <div class="d-flex gap-3 justify-content-center">
+            <button type="button" class="btn rounded-pill px-5 py-2" data-bs-dismiss="modal" style="font-weight: 600; font-size: 1.05rem; background: #f1f5f9; border: 1px solid #cbd5e1; color: #475569; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: all 0.3s ease;">না, থাক</button>
+            <button type="button" class="btn btn-danger rounded-pill px-5 py-2 shadow-sm" onclick="executeLogout()" style="font-weight: 600; font-size: 1.05rem; background: #ef4444; border: none; transition: all 0.3s ease;">হ্যাঁ, লগআউট</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/admin.js?v=2"></script>
+<script>
+    // Mobile sidebar toggle
+    document.getElementById('sidebarToggle')?.addEventListener('click', () => {
+        document.getElementById('sidebar').classList.toggle('show');
+    });
+</script>
+</body>
+</html>

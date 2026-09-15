@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="HealthCare Plus - অ্যাডমিন প্যানেল লগইন">
+    <title>অ্যাডমিন লগইন - HealthCare Plus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #4361ee;
+            --text-heading: #1e1e24;
+            --bg-surface: rgba(255, 255, 255, 0.9);
+        }
+        
+        body {
+            font-family: 'Inter', 'Hind Siliguri', sans-serif;
+            background-color: #2b2b4e; /* Deep indigo matching admin sidebar */
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+
+        .login-card {
+            background: var(--bg-surface);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            overflow: hidden;
+            width: 100%;
+            max-width: 480px; /* Increased from 420px for web view */
+        }
+
+        .input-group-text {
+            background: transparent;
+            border-right: none;
+        }
+
+        .form-control {
+            border-left: none;
+            padding-left: 0;
+            background: transparent !important;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+            background: transparent;
+        }
+        
+        .input-group {
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            transition: all 0.3s;
+            overflow: hidden;
+            background: rgba(255,255,255,0.5);
+        }
+
+        .input-group:focus-within {
+            border-color: var(--primary);
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container d-flex justify-content-center">
+    <div class="login-card">
+        <!-- Top accent line -->
+        <div style="height: 6px; background: linear-gradient(90deg, #4361ee, #4cc9f0);"></div>
+        
+        <div class="p-5">
+            <div class="text-center mb-4">
+                <div class="d-inline-flex align-items-center justify-content-center mb-3 shadow-sm" style="width:72px; height:72px; border-radius:20px; background: #ffffff;">
+                    <i class="fa-solid fa-shield-halved fa-2xl" style="color: var(--primary);"></i>
+                </div>
+                <h3 class="fw-bold" style="color: var(--text-heading);">অ্যাডমিন প্যানেল</h3>
+                <p class="text-muted small">সিস্টেমে প্রবেশ করতে লগইন করুন</p>
+            </div>
+
+            <form onsubmit="handleAdminLogin(event)">
+                <div class="mb-4">
+                    <label class="form-label fw-bold text-secondary small text-uppercase">ইমেইল এড্রেস</label>
+                    <div class="input-group">
+                        <span class="input-group-text border-0"><i class="fa-solid fa-envelope" style="color: #a0aec0;"></i></span>
+                        <input type="email" id="adminEmail" class="form-control border-0" value="qubit.zone.bd@gmail.com" required placeholder="your@email.com">
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-bold text-secondary small text-uppercase">পাসওয়ার্ড</label>
+                    <div class="input-group">
+                        <span class="input-group-text border-0"><i class="fa-solid fa-lock" style="color: #a0aec0;"></i></span>
+                        <input type="password" id="adminPass" class="form-control border-0" value="Raiyan@#121822" required placeholder="••••••••">
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary w-100 rounded-pill py-3 fw-bold shadow mt-2" style="background: var(--primary); border: none; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 20px rgba(67, 97, 238, 0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
+                    <i class="fa-solid fa-arrow-right-to-bracket me-2"></i> লগইন করুন
+                </button>
+            </form>
+            
+            <div class="text-center mt-5">
+                <a href="index.html" class="text-decoration-none small text-muted" style="transition: color 0.3s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='#6c757d'"><i class="fa-solid fa-arrow-left me-1"></i> মূল ওয়েবসাইটে ফিরে যান</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function handleAdminLogin(event) {
+        event.preventDefault();
+        const email = document.getElementById('adminEmail').value;
+        const pass = document.getElementById('adminPass').value;
+        const btn = document.querySelector('button[type="submit"]');
+        
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-1"></i> লগইন হচ্ছে...';
+        
+        try {
+            const res = await fetch('/api/v1/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password: pass })
+            });
+            
+            const data = await res.json();
+            
+            if(res.ok && data.token) {
+                localStorage.setItem('isAdmin', 'true');
+                localStorage.setItem('adminToken', data.token);
+                window.location.href = 'admin.html';
+            } else {
+                alert(data.message || 'ভুল ইমেইল বা পাসওয়ার্ড!');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-arrow-right-to-bracket me-1"></i> লগইন করুন';
+            }
+        } catch(err) {
+            console.error(err);
+            alert('সার্ভার এরর! দয়া করে আবার চেষ্টা করুন।');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-arrow-right-to-bracket me-1"></i> লগইন করুন';
+        }
+    }
+</script>
+
+</body>
+</html>

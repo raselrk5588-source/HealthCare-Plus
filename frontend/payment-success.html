@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>পেমেন্ট সফল - HealthCare Plus</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body { background: #f0f8ff; display: flex; align-items: center; justify-content: center; height: 100vh; font-family: 'Hind Siliguri', sans-serif; margin: 0; }
+        .success-card { background: white; padding: 3rem; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05); max-width: 500px; width: 100%; border-top: 5px solid #198754; }
+        .icon-circle { width: 80px; height: 80px; background: #d1e7dd; color: #198754; font-size: 2.5rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin: 0 auto 1.5rem auto; }
+        .btn-custom { padding: 10px 25px; border-radius: 50px; font-weight: bold; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="success-card">
+    <div class="icon-circle">
+        <i class="fa-solid fa-check"></i>
+    </div>
+    <h2 class="fw-bold text-success mb-3">পেমেন্ট সফল হয়েছে!</h2>
+    <p class="text-muted mb-4">আপনার ডাক্তারের অ্যাপয়েন্টমেন্ট সফলভাবে কনফার্ম করা হয়েছে। আমরা শীঘ্রই আপনার সাথে যোগাযোগ করে বিস্তারিত জানাবো।</p>
+    
+    <div class="p-3 bg-light rounded text-start mb-4">
+        <p class="mb-1 text-muted small">বুকিং আইডি:</p>
+        <p class="fw-bold mb-0" id="bookingIdText">অপেক্ষা করুন...</p>
+    </div>
+
+    <a href="doctors.html" class="btn btn-primary btn-custom shadow-sm"><i class="fa-solid fa-arrow-left me-2"></i>ডাক্তার ডিরেক্টরিতে ফিরে যান</a>
+</div>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const appointmentId = urlParams.get('appointmentId');
+    if (appointmentId) {
+        document.getElementById('bookingIdText').innerText = appointmentId;
+        
+        // Show Notification to User
+        setTimeout(() => {
+            Swal.fire({
+                title: 'বুকিং সফল!',
+                text: 'আপনার অ্যাপয়েন্টমেন্ট কনফার্ম হয়েছে। বিস্তারিত তথ্য এসএমএস এর মাধ্যমে জানানো হবে।',
+                icon: 'success',
+                confirmButtonColor: '#198754',
+                confirmButtonText: 'ঠিক আছে'
+            });
+        }, 500);
+    } else {
+        document.getElementById('bookingIdText').innerText = 'N/A';
+    }
+</script>
+
+</body>
+</html>

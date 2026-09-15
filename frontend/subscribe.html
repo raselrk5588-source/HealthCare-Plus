@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription - HealthCare Plus</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=6">
+    <link rel="stylesheet" href="assets/css/animations.css">
+    <link rel="stylesheet" href="assets/css/sweetalert2.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            background-color: #f0fdf4; /* Soft green */
+            color: #1e293b;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Hind Siliguri', sans-serif;
+            position: relative;
+            overflow-y: auto;
+            padding-top: 0 !important;
+            padding-bottom: 20px;
+        }
+
+        /* Background animated blobs for a premium feel */
+        .blob-1 {
+            position: absolute;
+            top: -10%; left: -10%; width: 50vw; height: 50vw;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
+            border-radius: 50%; z-index: 0;
+            animation: float-blob 10s ease-in-out infinite alternate;
+        }
+        .blob-2 {
+            position: absolute;
+            bottom: -10%; right: -10%; width: 40vw; height: 40vw;
+            background: radial-gradient(circle, rgba(14, 165, 233, 0.1) 0%, transparent 70%);
+            border-radius: 50%; z-index: 0;
+            animation: float-blob 8s ease-in-out infinite alternate-reverse;
+        }
+
+        @keyframes float-blob {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, 30px) scale(1.1); }
+        }
+
+        .main-wrapper {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 480px;
+            padding: 20px;
+            margin: auto;
+        }
+
+        /* Unique Box Design */
+        .sub-card {
+            background: #ffffff;
+            border-radius: 40px;
+            padding: 50px 40px;
+            box-shadow: 0 25px 50px -12px rgba(5, 150, 105, 0.15), 0 0 20px rgba(5, 150, 105, 0.05);
+            border: 2px solid #dcfce7;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Decorative top ribbon inside the card */
+        .sub-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 8px;
+            background: linear-gradient(90deg, #059669, #0284c7);
+        }
+
+        .app-logo-area {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .app-logo-icon {
+            font-size: 3rem;
+            color: #059669;
+            margin-bottom: 15px;
+            background: #dcfce7;
+            width: 80px; height: 80px;
+            line-height: 80px;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 10px 20px rgba(5, 150, 105, 0.2);
+            animation: pulse-shadow 2s infinite;
+        }
+
+        @keyframes pulse-shadow {
+            0% { box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(5, 150, 105, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(5, 150, 105, 0); }
+        }
+
+        .app-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1e293b;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, #047857, #0d9488);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .form-control {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            color: #1e293b;
+            padding: 15px 20px;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .input-group-text {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            color: #64748b;
+            font-weight: bold;
+            border-radius: 15px 0 0 15px !important;
+        }
+
+        .form-control:focus {
+            background: #ffffff;
+            border-color: #34d399;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border: none;
+            color: white;
+            padding: 16px;
+            font-size: 1.25rem;
+            border-radius: 50px;
+            font-weight: 700;
+            width: 100%;
+            margin-top: 25px;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+            transition: all 0.3s;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(16, 185, 129, 0.4);
+        }
+
+        .provider-badge {
+            background: #f1f5f9;
+            color: #475569;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border: 1px solid #cbd5e1;
+        }
+        .provider-badge.robi { color: #e11d48; border-color: #fecdd3; background: #fff1f2; }
+        .provider-badge.airtel { color: #d97706; border-color: #fde68a; background: #fffbeb; }
+
+        .price-tag {
+            background: #f0fdf4;
+            color: #059669;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 25px;
+            border: 1px dashed #6ee7b7;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 576px) {
+            body {
+                align-items: flex-start;
+                padding-top: 5vh !important;
+            }
+            .sub-card {
+                padding: 30px 20px;
+                border-radius: 30px;
+            }
+            .app-title {
+                font-size: 1.5rem;
+            }
+            .app-logo-icon {
+                font-size: 2rem;
+                width: 60px;
+                height: 60px;
+                line-height: 60px;
+                margin-bottom: 10px;
+            }
+            .form-control {
+                padding: 12px 15px;
+                font-size: 1rem;
+            }
+            .btn-submit {
+                padding: 12px;
+                font-size: 1.1rem;
+                margin-top: 15px;
+            }
+            .main-wrapper {
+                padding: 15px;
+            }
+        }
+    </style>
+
+<style>
+    @media (min-width: 1200px) {
+        .navbar-nav .nav-link {
+            font-size: 0.95rem !important;
+            padding-left: 0.6rem !important;
+            padding-right: 0.6rem !important;
+            white-space: nowrap;
+        }
+        .navbar-brand {
+            font-size: 1.2rem !important;
+        }
+    }
+</style>
+</head>
+<body>
+    <div class="blob-1"></div>
+    <div class="blob-2"></div>
+
+    <div class="main-wrapper">
+        <!-- Step 1: Phone Number -->
+        <div class="sub-card" id="step1">
+            <div class="app-logo-area">
+                <div class="app-logo-icon">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                </div>
+                <h1 class="app-title">HealthCare Plus</h1>
+            </div>
+
+            <div class="text-center">
+                <h3 class="fw-bold mb-3 text-dark">প্রিমিয়াম সাবস্ক্রিপশন</h3>
+                <div class="price-tag">
+                    <div style="margin-bottom: 4px;"><i class="fa-solid fa-check-circle me-1"></i> 5.56 BDT/Daily (VAT+SD+Sc)</div>
+                    <div style="font-size: 0.85rem; opacity: 0.9;">* অটো রিনিউয়াল প্রযোজ্য</div>
+                </div>
+            </div>
+            
+            <div class="d-flex justify-content-center gap-2 mb-4">
+                <span class="provider-badge robi"><i class="fa-solid fa-signal me-1"></i> Robi</span>
+                <span class="provider-badge airtel"><i class="fa-solid fa-signal me-1"></i> Airtel</span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label text-secondary fw-bold ms-1">আপনার মোবাইল নম্বর দিন</label>
+                <div class="input-group">
+                    <span class="input-group-text border-end-0">+88</span>
+                    <input type="tel" id="phoneNumber" class="form-control border-start-0 ps-0" placeholder="018XXXXXXXX" maxlength="11">
+                </div>
+                <div id="phoneError" class="text-danger small mt-2 ms-2 fw-bold d-none">
+                    <i class="fa-solid fa-circle-exclamation"></i> দয়া করে সঠিক রবি (018) বা এয়ারটেল (016) নম্বর দিন।
+                </div>
+            </div>
+            
+            <button class="btn-submit" onclick="sendOTP()">
+                OTP পাঠান <i class="fa-solid fa-arrow-right ms-2"></i>
+            </button>
+        </div>
+
+        <!-- Step 2: OTP Verification -->
+        <div class="sub-card d-none" id="step2">
+            <div class="app-logo-area mb-4">
+                <div class="app-logo-icon" style="color: #0284c7; background: #e0f2fe;">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h3 class="fw-bold text-dark mt-2">OTP ভেরিফিকেশন</h3>
+            </div>
+
+            <p class="text-center text-secondary mb-4 fw-bold">আপনার নম্বরে একটি ৬-ডিজিটের কোড পাঠানো হয়েছে</p>
+            
+            <div class="mb-4">
+                <label class="form-label text-secondary fw-bold ms-1">OTP কোড দিন</label>
+                <input type="text" id="otpCode" class="form-control text-center fs-3 letter-spacing-2" placeholder="123456" value="123456" maxlength="6" style="letter-spacing: 15px;">
+                <div id="otpError" class="text-danger small mt-2 ms-2 fw-bold d-none">
+                    <i class="fa-solid fa-circle-exclamation"></i> ভুল OTP! (কোডটি হলো: 123456)
+                </div>
+            </div>
+            
+            <button class="btn-submit" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); box-shadow: 0 10px 25px rgba(2, 132, 199, 0.3);" onclick="verifyOTP()">
+                ভেরিফাই করুন <i class="fa-solid fa-check-circle ms-2"></i>
+            </button>
+            <div class="text-center mt-4">
+                <button class="btn btn-link text-secondary text-decoration-none small fw-bold" onclick="goBack()">
+                    <i class="fa-solid fa-arrow-left me-1"></i> নম্বর পরিবর্তন করুন
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/subscription.js?v=2.1"></script>
+</body>
+</html>
