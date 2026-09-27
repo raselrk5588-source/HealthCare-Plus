@@ -1,0 +1,134 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - '**'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@master
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          envs: MONGO_URI,GEMINI_API_KEY
+          script: |
+            TARGET_DIR="/var/www/roni/healthcareplus.vxsbd.com"
+            DOMAIN="healthcareplus.vxsbd.com"
+            
+            # 1. Setup directory
+            mkdir -p $TARGET_DIR
+            cd $TARGET_DIR
+            git config --global --add safe.directory $TARGET_DIR
+            
+            # Clone if .git doesn't exist, else fetch and reset
+            if [ ! -d ".git" ]; then
+              git clone https://github.com/raselrk5588-source/HealthCare-Plus.git .
+            fi
+            
+            git fetch origin
+            git checkout ${{ github.ref_name }}
+            git reset --hard origin/${{ github.ref_name }}
+            git clean -fd
+            
+            # 2. Dynamic Port Configuration and .env generation
+            cd backend
+            if grep -q "^PORT=" .env 2>/dev/null; then
+                PORT=$(grep "^PORT=" .env | cut -d '=' -f2 | tr -d '\r')
+                echo "Found existing port $PORT in .env"
+            else
+                PORT=4000
+                # Find the first available port starting from 4000
+                while ss -tuln | grep -q ":$PORT "; do
+                    PORT=$((PORT+1))
+                done
+                echo "Found free port $PORT"
+            fi
+            
+            # Generate the full .env file dynamically
+            echo "Generating .env file..."
+            cat <<EOF > .env
+            PORT=$PORT
+            MONGO_URI=$MONGO_URI
+            GEMINI_API_KEY=$GEMINI_API_KEY
+            BKASH_BASE_URL=https://checkout.sandbox.bka.sh/v1.2.0-beta
+            BKASH_APP_KEY=your_app_key_here
+            BKASH_APP_SECRET=your_app_secret_here
+            BKASH_USERNAME=your_username_here
+            BKASH_PASSWORD=your_password_here
+            EOF
+            
+            # 3. Backend setup with PM2
+            npm install
+            npm install -g pm2
+            # Use a unique name for this project's backend so it doesn't conflict with others
+            pm2 describe "healthcare-backend" > /dev/null
+            if [ $? -eq 0 ]; then
+                pm2 restart "healthcare-backend"
+            else
+                pm2 start server.js --name "healthcare-backend"
+            fi
+            pm2 save
+            
+            # 4. Nginx and SSL setup
+            NGINX_CONF="/etc/nginx/sites-available/$DOMAIN"
+            echo "Configuring Nginx for $DOMAIN on port $PORT..."
+            cat <<EOF > $NGINX_CONF
+            server {
+                listen 80;
+                server_name $DOMAIN;
+
+                # Frontend Static Files
+                root $TARGET_DIR/frontend;
+                index index.html;
+
+                location / {
+                    try_files \$uri \$uri/ /index.html;
+                }
+
+                # Backend API & Uploads
+                location /api/ {
+                    proxy_pass http://localhost:$PORT/api/;
+                    proxy_http_version 1.1;
+                    proxy_set_header Upgrade \$http_upgrade;
+                    proxy_set_header Connection 'upgrade';
+                    proxy_set_header Host \$host;
+                    proxy_cache_bypass \$http_upgrade;
+                }
+
+                location /uploads/ {
+                    proxy_pass http://localhost:$PORT/uploads/;
+                    proxy_http_version 1.1;
+                    proxy_set_header Upgrade \$http_upgrade;
+                    proxy_set_header Connection 'upgrade';
+                    proxy_set_header Host \$host;
+                    proxy_cache_bypass \$http_upgrade;
+                }
+            }
+            EOF
+              
+            # Enable the site
+            ln -sf $NGINX_CONF /etc/nginx/sites-enabled/
+            
+            # Test Nginx and reload
+            nginx -t && systemctl reload nginx
+            
+            # Run Certbot for SSL if certbot is installed and cert doesn't exist
+            if command -v certbot &> /dev/null; then
+                if ! certbot certificates | grep -q "$DOMAIN"; then
+                    echo "Configuring SSL for $DOMAIN..."
+                    certbot --nginx -d $DOMAIN --non-interactive --agree-tos --register-unsafely-without-email
+                else
+                    echo "SSL certificate for $DOMAIN already exists."
+                fi
+            else
+                echo "Certbot is not installed. Please install Certbot to enable SSL."
+            fi
